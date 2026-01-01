@@ -1,3 +1,4 @@
+
 name: Build APK
 on: [push]
 jobs:
@@ -5,10 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build APK with Buildozer
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
+
+      - name: Build with Buildozer
         uses: ArtemSerebriakov/buildozer-action@v1
         with:
+          buildozer_version: stable
           command: buildozer -v android debug
+          
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
